@@ -46,6 +46,24 @@ async def teams(ctx, *names):
     team2 = ", ".join(arr[m:])
     await ctx.send("Team 1: %s\nTeam 2: %s" % (team1, team2))
 
+@client.command(help='Rearranges arguments in random order')
+async def shuffle(ctx, *names):
+    arr = [i for i in names]
+    import random
+    random.shuffle(arr)
+    await ctx.send(", ".join(arr))
+
+@client.command(help='Creates a voting message with suplied arguments as voting items')
+async def vote(ctx, *items):
+    emoticons = [ ":cat:", ":mouse:", ":dog:", ":monkey:", ":elephant:" ]
+    arr = [i for i in items]
+    if len(arr) > len(emoticons):
+        await ctx.send("Only up to %s voting items are supported" % len(emoticons))
+    else:
+        await ctx.send("\n".join(["%s - %s" % (item, em)
+                                  for item, em
+                                  in zip(emoticons, arr)]))
+
 @client.group(help='Savegame management utils')
 async def saves(ctx):
     if ctx.invoked_subcommand is None:
