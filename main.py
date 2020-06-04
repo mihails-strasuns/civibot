@@ -55,14 +55,17 @@ async def shuffle(ctx, *names):
 
 @client.command(help='Creates a voting message with suplied arguments as voting items')
 async def vote(ctx, *items):
-    emoticons = [ ":cat:", ":mouse:", ":dog:", ":monkey:", ":elephant:" ]
+    emoticons = [ '\N{dog face}', '\N{cat face}', '\N{mouse face}',
+                  '\N{monkey face}', '\N{raccoon}', '\N{tiger face}' ]
     arr = [i for i in items]
     if len(arr) > len(emoticons):
         await ctx.send("Only up to %s voting items are supported" % len(emoticons))
     else:
-        await ctx.send("\n".join(["%s - %s" % (item, em)
-                                  for item, em
-                                  in zip(emoticons, arr)]))
+        message = await ctx.send("\n".join(["%s - %s" % (item, em)
+                                            for item, em
+                                            in zip(emoticons, arr)]))
+        for em, _ in zip(emoticons, arr):
+            await message.add_reaction(em)
 
 @client.group(help='Savegame management utils')
 async def saves(ctx):
